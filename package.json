@@ -11,6 +11,5 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^13.9.5"
   }
 }
