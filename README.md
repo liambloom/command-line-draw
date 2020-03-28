@@ -31,7 +31,7 @@ const { Terminal } = require("command-line-draw");
 
   - `in` [`<tty.ReadStream>`](https://nodejs.org/api/tty.html#tty_class_tty_readstream) Where the `Terminal` reads user input from. **Default:** `process.stdin`.
   - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) Where the `Terminal` writes to. **Default:** `process.stdout`.
-  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The width of the `Terminal`.**Default:** `terminal.out.columns - 2`.
+  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The width of the `Terminal`. **Default:** `terminal.out.columns - 2`.
   - `height` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The height of the `Terminal`. **Default:** `terminal.out.rows - 2`.
   - `border` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The border style of the terminal. See [here](#borders) for a list of valid border styles. **Default:** `"light"`.
   - `color` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -114,7 +114,7 @@ terminal.clear();
 
 ### `terminal.addSprite(sprite)`
 
-  - `sprite` [`<Sprite>`](#class:-sprite) Sprite to be added.
+  - `sprite` [`<Sprite>`](#class-sprite) Sprite to be added.
 
 The `Sprite` cannot be used until it is added to a terminal. When the terminal is resized, sprites that were showing will automatically be redrawn. Has no affect if sprite is already on the terminal,
 
