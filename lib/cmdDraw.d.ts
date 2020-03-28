@@ -57,18 +57,22 @@ export class Terminal extends EventEmitter {
     }
     dev?: boolean;
   });
-  drawLine(x1: number, y1: number, x2: number, y2: number, color?: ColorString, thickness = 1, dashed = boolean, dashThickness = 0.5, spaceColor?: ColorString): void;
+  drawLine(x1: number, y1: number, x2: number, y2: number, color?: ColorString, thickness?: number, dashed?: boolean, dashThickness?: number, spaceColor?: ColorString): void;
   drawBox(x: number, y: number, width: number, height: number, color?: ColorString): void;
   write(text: string, x: number, y: number, color?: ColorString): void;
   clear(): void;
   addSprite(sprite: Sprite): void;
-  sevenSegment(x: number, y: number, a: string, b: string, c: string, d: string, e: string, f: string, g: string, color?: ColorString): void;
-  sevenSegmentToBitmap(a: string, b: string, c: string, d: string, e: string, f: string, g: string, color?: ColorString): void;
-  sevenSegmentToBitmap(a: string, b: string, c: string, d: string, e: string, f: string, g: string): boolean[][];
+  sevenSegment(x: number, y: number, a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, color?: ColorString): void;
+  sevenSegmentToBitmap(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean): boolean[][];
   writeLarge(text: string, x: number, y: number, color?: ColorString): void;
   bitmap(x: number, y: number, ...matrixes: boolean[][][]): void;
   bitmap(x: number, y: number, color?: ColorString, ...matrixes: boolean[][][]): void;
   log(data: any, ...args: any[]): void;
+  #clear: () => void;
+  #refresh: () => void;
+  #onresize: () => void;
+  #drawLineAcross: () => void;
+  #drawBorder: () => void;
   get tooBig (): boolean;
   get largestBorder (): number;
   get time (): number;
@@ -78,16 +82,7 @@ export class Terminal extends EventEmitter {
   readonly width: number;
   readonly height: number;
   readonly borderStyle: BorderStyle;
-  readonly borderChars: {
-    vertical: string,
-    horizontal: string,
-    topLeft: string,
-    topRight: string,
-    bottomLeft: string,
-    bottomRight: string,
-    horizontalUp?: string,
-    horizontalDown?: string
-  }
+  readonly borderChars: BorderChars | Partial<MenuBorderChars>;
   readonly hasBorder: boolean
   readonly color: Color;
   readonly margin: Margin;
@@ -345,7 +340,6 @@ export class Sprite extends EventEmitter {
   moveTo(x: number, y: number, t?: number): void;
   moveRelative(dx: number, dy: number, t?: number): void;
   readonly preciseAxis: Axis;
-  readonly speed: number;
   readonly callback: (x: number, y: number, ...args: any[]) => void;
   readonly xRounder: (x: number) => number;
   readonly yRounder: (x: number) => number;
@@ -377,12 +371,12 @@ export class Menu extends Sprite {
   get width(): number;
   get borderChars(): BorderChars | MenuBorderChars;
   get style(): BorderStyle;
-  #drawTop(color?: ColorString): void;
-  #drawBottom(color?: ColorString): void;
-  #drawTopBottom(borders: {
+  #drawTop: (color?: ColorString) => void;
+  #drawBottom: (color?: ColorString) => void;
+  #drawTopBottom: (borders: {
     left: string;
     horizontal: string;
     connect: string;
     right: string;
-  }, color?: ColorString, dy: number): void;
+  }, color: ColorString | undefined, dy: number) => void;
 }
