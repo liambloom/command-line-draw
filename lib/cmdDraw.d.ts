@@ -1,10 +1,10 @@
 import { WriteStream, ReadStream } from "tty";
-import * as EventEmitter from "events";
+import { EventEmitter } from "events";
 
 type ColorString = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white";
 type BorderStyle = "light" | "heavy" | "double" | "round" | "solid" | "none";
 type Axis = "x" | "y" | "neither";
-type Boolean7 = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+//type Boolean7 = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
 interface BorderChars {
   vertical: string,
   horizontal: string,
@@ -18,7 +18,7 @@ interface MenuBorderChars {
   horizontalDown: string
 }
 
-class Margin {
+declare class Margin {
   constructor (out: WriteStream, width: number, height: number);
   get lr(): number;
   get tb(): number;
@@ -27,7 +27,7 @@ class Margin {
   #height: number;
 }
 
-class Color extends EventEmitter {
+declare class Color extends EventEmitter {
   constructor(out: WriteStream);
   reset(): void;
   refresh(): void;
@@ -66,13 +66,13 @@ export class Terminal extends EventEmitter {
   sevenSegmentToBitmap(a: string, b: string, c: string, d: string, e: string, f: string, g: string, color?: ColorString): void;
   sevenSegmentToBitmap(a: string, b: string, c: string, d: string, e: string, f: string, g: string): boolean[][];
   writeLarge(text: string, x: number, y: number, color?: ColorString): void;
-  bitmap(x: number, y: number, ...matrixes?: boolean[][][]): void;
-  bitmap(x: number, y: number, color?: ColorString, ...matrixes?: boolean[][][]): void;
+  bitmap(x: number, y: number, ...matrixes: boolean[][][]): void;
+  bitmap(x: number, y: number, color?: ColorString, ...matrixes: boolean[][][]): void;
   log(data: any, ...args: any[]): void;
   get tooBig (): boolean;
   get largestBorder (): number;
   get time (): number;
-  clearMode = boolean;
+  clearMode: boolean;
   readonly in: ReadStream;
   readonly out: WriteStream;
   readonly width: number;
@@ -93,9 +93,9 @@ export class Terminal extends EventEmitter {
   readonly margin: Margin;
   readonly dev: boolean;
   #frozenStartTime: number;
-  #logHeight = 0;
-  #frozen = 0;
-  #sprites = new Set<Sprite>();
+  #logHeight: number;
+  #frozen: number;
+  #sprites: Set<Sprite>;
   static FULL: string;
   static TOP: string;
   static BOTTOM: string;
