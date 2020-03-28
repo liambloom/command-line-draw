@@ -1,6 +1,6 @@
 {
   "name": "command-line-draw",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "./lib/cmdDraw.js",
   "types": "./lib/cmdDraw.d.ts",
