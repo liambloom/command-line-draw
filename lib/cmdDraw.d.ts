@@ -379,4 +379,5 @@ export class Menu extends Sprite {
     connect: string;
     right: string;
   }, color: ColorString | undefined, dy: number) => void;
+  #open: boolean;
 }
