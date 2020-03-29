@@ -24,37 +24,39 @@ There are 4 classes exported by this module, and this section contains documenta
   - [Class: `Terminal` ***Documentation incomplete***](#class-terminal)
     - [`new Terminal([config])`](#new-terminalconfig)
     - [`terminal.addSprite(sprite)`](#terminaladdSpritesprite)
-    - [`terminal.bitmap(x, y[, color], ...matrixes)`](#terminal.bitmapx-y[-color]-matrixes)
-    - [`terminal.borderStyle`](#terminal.borderstyle)
-    - [`terminal.clear()`](#terminal.clear)
-    - [`terminal.color`](#terminal.color)
-    - [`terminal.drawBox(x, y, width, height[, color])`](#terminal.drawBoxx-y-width-height[-color])
-    - [`terminal.drawLine(x1, y1, x2, y2[, color][, thickness][, dashed][, dashThickness][, spaceColor])`](#terminal.drawLinex1-y1-x2-y2[-color][-thickness][-dashed][-dashThickness][-spaceColor])
-    - [`terminal.hasBorder`](#terminal.hasborder)
-    - [`terminal.height`](#terminal.height)
-    - [`terminal.in`](#terminal.in)
-    - [`terminal.largestBorder`](#terminal.largestborder)
-    - [`terminal.log([data][, ...args])`](#terminal.log[data][-args])
-    - [`terminal.out`](#terminal.out)
-    - [`terminal.sevenSegment(x, y, a, b, c, d, e, f, g[, color])`](#terminal.sevensegmentx-y-a-b-c-d-e-f-g[-color])
-    - [`terminal.sevenSegmentToBitmap(a, b, c, d, e, f, g)`](#terminal.sevensegmenttobitmapa-b-c-d-e-f-g)
-    - [`terminal.time`](#terminal.time)
-    - [`terminal.tooBig`](#terminal.toobig)
-    - [`terminal.width`](#terminal.width)
-    - [`terminal.write(text, x, y[, color])`](#terminal.writetext-x-y[-color])
-    - [`terminal.writeLarge(text, x, y[, color])`](#terminal.writeLargetext-x-y[-color])
+    - [`terminal.bitmap(x, y[, color], ...matrixes)`](#terminalbitmapx-y-color-matrixes)
+    - [`terminal.borderStyle`](#terminalborderstyle)
+    - [`terminal.clear()`](#terminalclear)
+    - [`terminal.color`](#terminalcolor)
+    - [`terminal.drawBox(x, y, width, height[, color])`](#terminaldrawBoxx-y-width-height-color)
+    - [`terminal.drawLine(x1, y1, x2, y2[, color][, thickness][, dashed][, dashThickness][, spaceColor])`](#terminaldrawLinex1-y1-x2-y2-color-thickness-dashed-dashThickness-spaceColor)
+    - [`terminal.hasBorder`](#terminalhasborder)
+    - [`terminal.height`](#terminalheight)
+    - [`terminal.in`](#terminalin)
+    - [`terminal.largestBorder`](#terminallargestborder)
+    - [`terminal.log([data][, ...args])`](#terminallogdata-args)
+    - [`terminal.out`](#terminalout)
+    - [`terminal.sevenSegment(x, y, a, b, c, d, e, f, g[, color])`](#terminalsevensegmentx-y-a-b-c-d-e-f-g-color)
+    - [`terminal.sevenSegmentToBitmap(a, b, c, d, e, f, g)`](#terminalsevensegmenttobitmapa-b-c-d-e-f-g)
+    - [`terminal.time`](#terminaltime)
+    - [`terminal.tooBig`](#terminaltoobig)
+    - [`terminal.width`](#terminalwidth)
+    - [`terminal.write(text, x, y[, color])`](#terminalwritetext-x-y-color)
+    - [`terminal.writeLarge(text, x, y[, color])`](#terminalwriteLargetext-x-y-color)
   - [Class: `Sprite` ***Documentation missing***](#class-sprite)
   - [Class: `Box` ***Documentation missing***](#class-box)
   - [Class: `Menu` ***Documentation missing***](#class-menu)
-  - [Class: `Color` ***Documentation incomplete, Not Exported***](#class-color-not-exported)
-    - [Static: `Color.getBackgroundColor(color)`](#static-color.getbackgroundcolorcolor)
-    - [Static: `Color.getForegroundColor(color)`](#static-color.getforegroundcolorcolor)
-    - [Static: `Color.RESET`](#static-color.reset)
-    - [Event: `'change'`](#event-'change')
-    - [`color.background`](#color.background)
-    - [`color.foreground`](#color.foreground)
-    - [`color.refresh()`](#color.refresh)
-    - [`color.reset()`](#color.reset)
+  - [Class: `Color` ***Not Exported***](#class-color-not-exported)
+    - [`new Color(out)`](#new-colorout)
+    - [Static: `Color.getBackgroundColor(color)`](#static-colorgetbackgroundcolorcolor)
+    - [Static: `Color.getForegroundColor(color)`](#static-colorgetforegroundcolorcolor)
+    - [Static: `Color.RESET`](#static-colorreset)
+    - [Event: `'change'`](#event-change)
+    - [`color.background`](#colorbackground)
+    - [`color.foreground`](#colorforeground)
+    - [`color.refresh()`](#colorrefresh)
+    - [`color.reset()`](#colorreset)
+  - [Class `Margin` ***Documentation missing, Not Exported***](#class-margin-not-exported)
   - [Types](#types)
   - [More Info](#more-info)
     - [Borders](#borders)
@@ -86,7 +88,7 @@ const { Terminal } = require('command-line-draw');
   - `color` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
     - `foreground` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The foreground color of the `Terminal`. See [here](#colors) for a list of valid colors. **Default:** `'black'`.
     - `background` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The background color of the `Terminal`. See [here](#colors) for a list of valid colors. **Default:** `'white'`.
-  - `dev` [`<boolean>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Determines behavior of [`terminal.log()`](#terminal.log[data][-args]). **Default:** `false`.
+  - `dev` [`<boolean>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Determines behavior of [`terminal.log()`](#terminal.logdata-args). **Default:** `false`.
 
 Creates a new `Terminal` object.
 
@@ -151,7 +153,7 @@ A string representing the type of border the `terminal` has. See [here](#borders
 
 ### `terminal.clear()`
 
-Clears the entire terminal (including logged messages). The border remains visible. Any moving [`sprites`](#class:-sprite) also stop and are cleared.
+Clears the entire terminal (including logged messages). The border remains visible. Any moving [`sprites`](#class-sprite) also stop and are cleared.
 
 ### `terminal.drawBox(x, y, width, height[, color])`
 
@@ -167,7 +169,7 @@ Draws a box on the terminal.
 
   - [`<Color>`](#class-color)
 
-A [`Color`](#class-color) object containing information about the `terminal`'s color
+A `Color` object containing information about the `terminal`'s color
 
 ### `terminal.drawLine(x1, y1, x2, y2[, color][, thickness][, dashed][, dashThickness][, spaceColor])`
 
@@ -310,13 +312,19 @@ terminal.log('Hello World');
 
 ## Class: `Sprite`
 
+  - Extends: [`<EventEmitter>`](https://nodejs.org/api/events.html#events_class_eventemitter)
+
 ***`Sprite` class has not yet been documented***
 
 ## Class: `Box`
 
+  - Extends: [`<Sprite>`](#class-sprite)
+
 ***`Box` class has not yet been documented***
 
 ## Class: `Menu`
+
+  - Extends: [`<Sprite>`](#class-sprite)
 
 ***`Menu` class has not yet been documented***
 
@@ -324,7 +332,22 @@ terminal.log('Hello World');
 
   - Extends: [`<EventEmitter>`](https://nodejs.org/api/events.html#events_class_eventemitter)
 
-The class `Color` is not exported, however, [`terminal.color`](#terminal.color) is an instance of it, so its properties and methods are still available to you.
+The class `Color` is not exported, however, [`terminal.color`](#terminalcolor) is an instance of it, so its properties and methods are still available to you.
+
+### `new Color(out)`
+
+  - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) The stream to add colors to.
+
+Creates a new `Color` object.
+
+```js
+const { Terminal } = require('command-line-draw');
+
+const terminal = new Terminal();
+
+const Color = terminal.color.constructor
+const color = new Color(process.stdout); // There is literally no reason ever to do this
+```
 
 ### Static: `Color.getBackgroundColor(color)`
 
@@ -380,13 +403,13 @@ The name of the current foreground color of the terminal. Is settable. See a lis
 
 Clears formatting, then reapplies `this.foreground` and `this.background` colors.
 
-### `color.reset()
+### `color.reset()`
 
 Resets `this.foreground` and `this.background` to `undefined`
 
----
+## Class: `Margin` *Not Exported*
 
-***`Color` class documentation is incomplete***
+***`Menu` class has not yet been documented***
 
 ## Types
 
