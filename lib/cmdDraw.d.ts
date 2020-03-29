@@ -32,9 +32,9 @@ declare class Color extends EventEmitter {
   reset(): void;
   refresh(): void;
   get foreground(): ColorString | undefined;
-  set foreground(color: ColorString);
+  set foreground(color: ColorString | undefined);
   get background(): ColorString | undefined;
-  set background(color: ColorString);
+  set background(color: ColorString | undefined);
   #out: WriteStream;
   #foreground?: ColorString;
   #background?: ColorString;
@@ -82,7 +82,7 @@ export class Terminal extends EventEmitter {
   readonly width: number;
   readonly height: number;
   readonly borderStyle: BorderStyle;
-  readonly borderChars: BorderChars | Partial<MenuBorderChars>;
+  readonly borderChars: Array<BorderChars | Partial<MenuBorderChars>>;
   readonly hasBorder: boolean
   readonly color: Color;
   readonly margin: Margin;

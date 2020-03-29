@@ -1,3 +1,5 @@
+// command-line-pong (on npm) (v1.3.0)
+
 function pong () {
   "use strict";
   const flags = require("./flags")();

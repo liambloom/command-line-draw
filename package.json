@@ -1,6 +1,6 @@
 {
   "name": "command-line-draw",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "./lib/cmdDraw.js",
   "types": "./lib/cmdDraw.d.ts",
@@ -14,7 +14,9 @@
     "game",
     "command line",
     "terminal",
-    "cli"
+    "cli",
+    "draw",
+    "animation"
   ],
   "repository": {
     "type": "git",

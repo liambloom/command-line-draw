@@ -1,6 +1,6 @@
 # Tests
 
-These test files are an actual module in and of itself. It's name is [`command-line-pong`](https://www.npmjs.com/package/command-line-pong), and this library was created for the purpose of this pong game. It can be installed using the command
+These test files are an actual module in and of itself. It's name is [`command-line-pong`](https://www.npmjs.com/package/command-line-pong) (the version here is v1.3.0), and this library was created for the purpose of this pong game. It can be installed using the command
 
 ```
 $ npm i -g command-line-pong
