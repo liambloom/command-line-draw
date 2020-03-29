@@ -22,8 +22,8 @@ There are 4 classes exported by this module, and this section contains documenta
 ## Table of contents
 
   - [Class: `Terminal` ***Documentation incomplete***](#class-terminal)
-    - [`new Terminal([config])`](#new-terminal[config])
-    - [`terminal.addSprite(sprite)`](#terminal.addSpritesprite)
+    - [`new Terminal([config])`](#new-terminalconfig)
+    - [`terminal.addSprite(sprite)`](#terminaladdSpritesprite)
     - [`terminal.bitmap(x, y[, color], ...matrixes)`](#terminal.bitmapx-y[-color]-matrixes)
     - [`terminal.borderStyle`](#terminal.borderstyle)
     - [`terminal.clear()`](#terminal.clear)
