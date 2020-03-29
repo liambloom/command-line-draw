@@ -1,14 +1,15 @@
-// command-line-pong (on npm) (v1.3.0)
+// This version of pong is downloadable from npm as command-line-pong
 
-function pong () {
+const flags = require("./flags")();
+const { Terminal, Box, Menu } = require("../lib/cmdDraw");
+console = require("./colorConsole");
+
+function pong() {
   "use strict";
-  const flags = require("./flags")();
-  const { Terminal, Box, Menu } = require("../lib/cmdDraw");
-  console = require("./colorConsole");
 
   const random = (min, max) => Math.random() * (max - min) + min;
   const randomSlope = (min, max) => Math.tan(random(Math.atan(min), Math.atan(max)));
-  function directionFunc (n, direction) {
+  function directionFunc(n, direction) {
     const min = 0;
     const max = terminal.width - ball.width;
     if (Math.abs(n) === Infinity) {
@@ -17,13 +18,15 @@ function pong () {
     }
     else return Math.min(Math.max(n, min), max);
   }
-  function nextPoint (slope, direction) {
+  function nextPoint(slope, direction) {
     const directionMod = direction === "right" ? 1 : -1;
     const ballYInt = -slope * ball.x + ball.y;
     const x = directionFunc(directionMod * slope < 0 ? -ballYInt / slope : (terminal.height - ball.height - ballYInt) / slope, direction);
     const y = ball.yRounder(slope * x + ballYInt);
-    if (x > paddleX + paddleWidth) leftPaddle.moveTo(paddleX, Math.min(Math.max(y + 1 - paddleHeight / 2, 0), terminal.height - paddleHeight));
-    else leftPaddle.moveTo(paddleX, ball.yRounder(Math.min(Math.max(slope * (paddleX + paddleWidth) + ballYInt + 1 - paddleHeight / 2, 0), terminal.height - paddleHeight)));
+    if (automatePlayer2) {
+      if (x > paddleX + paddleWidth) leftPaddle.moveTo(paddleX, Math.min(Math.max(y + 1 - paddleHeight / 2, 0), terminal.height - paddleHeight));
+      else leftPaddle.moveTo(paddleX, ball.yRounder(Math.min(Math.max(slope * (paddleX + paddleWidth) + ballYInt + 1 - paddleHeight / 2, 0), terminal.height - paddleHeight)));
+    }
     return [ball.xRounder(x), y];
   }
   const writeScore = (score, location) => terminal.sevenSegment(location === "right" ? rightScoreX : leftScoreX, 1, ...Terminal.sevenSegmentPresets.numbers[score]);
@@ -49,7 +52,7 @@ function pong () {
   const borders = Terminal.BORDERS.double;
   borders.horizontalDown = "\u2566";
   borders.horizontalUp = "\u2569";
-  let cpuScore, playerScore, ballDirection, ballSlope, bouncedOff;
+  let cpuScore, playerScore, ballDirection, ballSlope, bouncedOff, automatePlayer2;
 
   const drawCenterLine = () => terminal.drawLine(centerX, 0, centerX, terminal.height, null, 2, true, 0.5);
 
@@ -61,7 +64,7 @@ function pong () {
   terminal.addSprite(rightPaddle);
   terminal.addSprite(ball);
 
-  function reset () {
+  function reset() {
     // paddles
     leftPaddle.stop();
     rightPaddle.stop();
@@ -81,8 +84,13 @@ function pong () {
   function bounce() {
     ball.moveTo(...nextPoint(ballSlope, ballDirection));
   }
+  function onresize() {
+    drawCenterLine();
+    writeScore(cpuScore, "left");
+    writeScore(playerScore, "right");
+  }
 
-  function init () {
+  function init() {
     cpuScore = 0;
     playerScore = 0;
     ballDirection = Math.round(Math.random()) ? "left" : "right";
@@ -91,12 +99,21 @@ function pong () {
     terminal.removeAllListeners();
     terminal.clear();
 
+    if (!automatePlayer2) {
+      terminal.on("w", () => {
+        leftPaddle.moveTo(leftPaddle.x, Math.max(leftPaddle.y - 1, 0));
+      });
+      terminal.on("s", () => {
+        leftPaddle.moveTo(leftPaddle.x, Math.min(leftPaddle.y + 1, terminal.height - leftPaddle.height));
+      });
+    }
     terminal.on("up", () => {
       rightPaddle.moveTo(rightPaddle.x, Math.max(rightPaddle.y - 1, 0));
     });
     terminal.on("down", () => {
       rightPaddle.moveTo(rightPaddle.x, Math.min(rightPaddle.y + 1, terminal.height - rightPaddle.height));
     });
+    terminal.on("resize", onresize);
 
     ball.on("clear", (x, y) => {
       if (x <= centerX && x >= centerX - 2) drawCenterLine();
@@ -156,14 +173,11 @@ function pong () {
       }
     });
 
-    writeScore(0, "left");
-    writeScore(0, "right");
-
     reset();
-    drawCenterLine();
+    onresize();
   }
 
-  function drawTitleScreen () {
+  function drawTitleScreen() {
     terminal.writeLarge("PONG", terminal.width / 2 - 15, terminal.height / 3 - 2.5);
     terminal.write("\x1b[4mBy Liam Bloom\x1b[0m", terminal.width / 2 - 6.5, terminal.height / 3 + 3.5);
     terminal.color.refresh();
@@ -172,13 +186,24 @@ function pong () {
   }
   terminal.on("resize", drawTitleScreen);
   drawTitleScreen();
-  function start (i) {
+  const difficultyMenu = new Menu(i => {
     leftPaddle.speed = [10, 15, 20, 30][i];
     init();
-  }
-  const difficultyMenu = new Menu(start, ["easy", "medium", "hard", "impossible"], "double");
+  }, ["easy", "medium", "hard", "impossible"], "double");
+  const playerCountMenu = new Menu(i => {
+    if (i === "0") {
+      automatePlayer2 = true;
+      difficultyMenu.draw((terminal.width - difficultyMenu.width) / 2, 2 * terminal.height / 3 - difficultyMenu.height / 2);
+    }
+    else {
+      automatePlayer2 = false;
+      leftPaddle.speed = 30;
+      init();
+    }
+  }, ["One player", "Two player"], "double");
   terminal.addSprite(difficultyMenu);
-  difficultyMenu.draw((terminal.width - difficultyMenu.width) / 2, 2 * terminal.height / 3 - difficultyMenu.height / 2);
-};
+  terminal.addSprite(playerCountMenu);
+  playerCountMenu.draw((terminal.width - playerCountMenu.width) / 2, 2 * terminal.height / 3 - playerCountMenu.height / 2);
+}
 
 pong();
