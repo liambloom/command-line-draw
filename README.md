@@ -17,17 +17,31 @@ $ npm i command-line-draw
 
 There are 4 classes exported by this module, and this section contains documentation for all 4. 
 
-*__A quick note:__ npm's css makes this documentation somewhat difficult to read, it may be easier to read it on [github](https://github.com/liambloom/command-line-draw#readme).*
+*__A quick note:__ npm's styling makes this documentation somewhat difficult to read, it may be easier to read it on [github](https://github.com/liambloom/command-line-draw#readme).*
 
 ## Table of contents
 
-  - [Class: `Terminal` ***Documentation incomplete***](#class-terminal)
+  - [Class: `Terminal`](#class-terminal)
     - [`new Terminal([config])`](#new-terminalconfig)
+    - [Static: `Terminal.BORDERS`](#static-terminalborders)
+    - [Static: `Terminal.BOTTOM`](#static-terminalbottom)
+    - [Static: `Terminal.FULL`](#static-terminalfull)
+    - [Static: `Terminal.LEFT`](#static-terminalleft)
+    - [Static: `Terminal.RIGHT`](#static-terminalright)
+    - [Static: `Terminal.TOP`](#static-terminaltop)
+    - [Static: `Terminal.bitmapPresets`](#static-terminalbitmappresets)
+      - [Static: `Terminal.bitmapPresets.letters`](#static-terminalbitmappresetsletters)
+      - [Static: `Terminal.bitmapPresets.punctuation`](#static-terminalbitmappresetspunctuation)
+    - [Static: `Terminal.sevenSegmentPresets`](#static-terminalsevensegmentpresets)
+      - [Static: `Terminal.sevenSegmentPresets.numbers`](#static-terminalsevensegmentpresetsnumbers)
+    - [Event: `'<keyName>'`](#event-keyname)
+    - [Event: `'resize'`](#event-resize)
     - [`terminal.addSprite(sprite)`](#terminaladdSpritesprite)
     - [`terminal.bitmap(x, y[, color], ...matrixes)`](#terminalbitmapx-y-color-matrixes)
     - [`terminal.borderStyle`](#terminalborderstyle)
     - [`terminal.clear()`](#terminalclear)
     - [`terminal.color`](#terminalcolor)
+    - [`terminal.dev`](#terminaldev)
     - [`terminal.drawBox(x, y, width, height[, color])`](#terminaldrawBoxx-y-width-height-color)
     - [`terminal.drawLine(x1, y1, x2, y2[, color][, thickness][, dashed][, dashThickness][, spaceColor])`](#terminaldrawLinex1-y1-x2-y2-color-thickness-dashed-dashThickness-spaceColor)
     - [`terminal.hasBorder`](#terminalhasborder)
@@ -35,6 +49,7 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`terminal.in`](#terminalin)
     - [`terminal.largestBorder`](#terminallargestborder)
     - [`terminal.log([data][, ...args])`](#terminallogdata-args)
+    - [`terminal.margin`](#terminalmargin)
     - [`terminal.out`](#terminalout)
     - [`terminal.sevenSegment(x, y, a, b, c, d, e, f, g[, color])`](#terminalsevensegmentx-y-a-b-c-d-e-f-g-color)
     - [`terminal.sevenSegmentToBitmap(a, b, c, d, e, f, g)`](#terminalsevensegmenttobitmapa-b-c-d-e-f-g)
@@ -56,8 +71,11 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`color.foreground`](#colorforeground)
     - [`color.refresh()`](#colorrefresh)
     - [`color.reset()`](#colorreset)
-  - [Class `Margin` ***Documentation missing, Not Exported***](#class-margin-not-exported)
-  - [Types](#types)
+  - [Class `Margin` ***Not Exported***](#class-margin-not-exported)
+    - [`new Margin(out, width, height)`](#new-marginout-width-height)
+    - [`margin.lr`](#marginlr)
+    - [`margin.tb`](#margintb)
+  - [Types![](../img/ts-def.png)](#types)
   - [More Info](#more-info)
     - [Borders](#borders)
     - [Colors](#colors)
@@ -97,6 +115,144 @@ const { Terminal } = require('command-line-draw');
 
 const terminal = new Terminal();
 ```
+
+### Static: `Terminal.BORDERS`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing several [unicode box drawing characters](https://en.wikipedia.org/wiki/Box-drawing_character#Unicode), sorted into different [border types](#borders)
+
+### Static: `Terminal.BOTTOM`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+A constant equal to the unicode character [U+2584 (Lower half block)](https://www.fileformat.info/info/unicode/char/2584/index.htm).
+
+### Static: `Terminal.FULL`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+A constant equal to the unicode character [U+2588 (Full block)](https://www.fileformat.info/info/unicode/char/2588/index.htm).
+
+### Static: `Terminal.LEFT`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+A constant equal to the unicode character [U+258C (Left half block)](https://www.fileformat.info/info/unicode/char/258c/index.htm)
+
+### Static: `Terminal.RIGHT`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+A constant equal to the unicode character [U+2590 (Right half block)](https://www.fileformat.info/info/unicode/char/2590/index.htm)
+
+### Static: `Terminal.TOP`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+A constant equal to the unicode character [U+2580 (Upper half block)](https://www.fileformat.info/info/unicode/char/2580/index.htm).
+
+### Static: `Terminal.bitmapPresets`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing [`boolean[][]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)s that can be passed into [`terminal.bitmap()`](#terminalbitmapx-y-color-matrixes) to print letters and punctuation.
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A);
+```
+
+### Static: `Terminal.bitmapPresets.letters`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing letters that can be passed into [`terminal.bitmap()`](#terminalbitmapx-y-color-matrixes). They are indexed `"A"`-`"Z"`.
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A); // Prints a large letter "A" to the terminal
+```
+
+### Static: `Terminal.bitmapPresets.punctuation`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing punctuation that can be passed into [`terminal.bitmap()`](#terminalbitmapx-y-color-matrixes). Included punctuation is `"."`, `"?"`, and `"!"`.
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.punctuation["!"]); // Prints a large exclamation point to the terminal
+```
+
+### Static: `Terminal.bitmapPresets.letters`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing letters that can be passed into [`terminal.bitmap()`](#terminalbitmapx-y-color-matrixes). They are indexed `"A"`-`"Z"`.
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A);
+```
+
+### Static: `Terminal.sevenSegmentPresets`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing [`boolean[]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)s that, using the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), can be passed into [`terminal.sevenSegment()`](#terminalsevensegmentx-y-a-b-c-d-e-f-g-color) or [`terminal.sevenSegmentToBitmap()`](#terminalsevensegmenttobitmapa-b-c-d-e-f-g).
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.number[0]); // Prints a large number 0 to the terminal
+```
+
+### Static: `Terminal.sevenSegmentPresets.number`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+An object containing [`boolean[]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)s that, using the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), can be passed into [`terminal.sevenSegment()`](#terminalsevensegmentx-y-a-b-c-d-e-f-g-color) or [`terminal.sevenSegmentToBitmap()`](#terminalsevensegmenttobitmapa-b-c-d-e-f-g). They are indexed `"0"`-`"9"`.
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.number[0]);
+```
+
+### Event: `'<keyName>'`
+
+On all key presses, with the exception of `ctrl+c`, an event is emitted. The implementation is as follows:
+
+```js
+terminal.in.on("keypress", (chunk, key) => {
+  if (key.ctrl && !key.meta && !key.shift && key.name === "c") process.exit();
+  else if (!this.tooBig) {
+    let eventName = "";
+    if (key.ctrl) eventName += "ctrl+";
+    if (key.meta) eventName += "alt+";
+    if (key.shift) eventName += "shift+";
+    eventName += key.name;
+    this.emit(eventName, key);
+  }
+});
+```
+
+For example, if the user were to press the up arrow, the event `'up'` would be emitted. If they held shift while pressing up, the event `'shift+up'` would be emitted.
+
+### Event: `'resize'`
+
+The `'resize'` event is emitted whenever `terminal.out` is resized.
 
 ### `terminal.addSprite(sprite)`
 
@@ -171,6 +327,12 @@ Draws a box on the terminal.
 
 A `Color` object containing information about the `terminal`'s color
 
+### `terminal.dev`
+
+  - [`<boolean>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+When `false`, [`terminal.log()`](#terminallogdata-args) has no affect. 
+
 ### `terminal.drawLine(x1, y1, x2, y2[, color][, thickness][, dashed][, dashThickness][, spaceColor])`
 
   - `x1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x coordinate of the starting point on the line.
@@ -221,7 +383,13 @@ The widest of `terminal.borderChars.vertical`, `terminal.borderChars.topLeft`, `
   - `data` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) The data to be printed
   - `...args` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) Values to be added to the data
 
-If `terminal.dev === true`, this method prints to `terminal.out` with a new line. If it is false, nothing is printed. Logged messages are not reprinted when the terminal is cleared. See [`console.log()`](https://nodejs.org/api/console.html#console_console_log_data_args) for more details. 
+If `terminal.dev === true`, this method prints to `terminal.out` with a new line. If it is false, nothing is printed. Logged messages are not reprinted when the terminal is cleared. See [`console.log()`](https://nodejs.org/api/console.html#console_console_log_data_args) for more details.
+
+### `terminal.margin`
+
+  - [`<Margin>`](#class-margin-not-exported)
+
+A `Margin` object containing information about the `terminal`'s margin
 
 ### `terminal.out`.
 
@@ -306,10 +474,6 @@ const terminal = new Terminal({
 terminal.log('Hello World');
 ```
 
----
-
-***`Terminal` class documentation is incomplete***
-
 ## Class: `Sprite`
 
   - Extends: [`<EventEmitter>`](https://nodejs.org/api/events.html#events_class_eventemitter)
@@ -336,7 +500,7 @@ The class `Color` is not exported, however, [`terminal.color`](#terminalcolor) i
 
 ### `new Color(out)`
 
-  - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) The stream to add colors to.
+  - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) The write stream to add colors to.
 
 Creates a new `Color` object.
 
@@ -409,7 +573,36 @@ Resets `this.foreground` and `this.background` to `undefined`
 
 ## Class: `Margin` *Not Exported*
 
-***`Menu` class has not yet been documented***
+The class `Color` is not exported, however, [`terminal.margin`](#terminalmargin) is an instance of it, so its properties and methods are still available to you.
+
+### `new Margin(out, width, height)`
+
+  - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) The write stream that the `terminal` is on.
+  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The width of the `terminal`.
+  - `height` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The height of the `terminal`.
+
+Creates a new `Margin` object. There is no reason for you to *ever* use this, I just included it for completion
+
+```js
+const { Terminal } = require("command-line-draw");
+
+const terminal = new Terminal();
+
+const Margin = terminal.margin.constructor;
+const myMargin = new Margin(process.stdout, terminal.width, terminal.height); // There is no reason for you to ever do this.
+```
+
+### `margin.lr`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The left-right margin of the `terminal`. If this is less than `terminal.largestBorder`, then the terminal will disappear and `terminal.tooBig` will be set to `true`
+
+### `margin.tb`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The top-bottom margin of the `terminal`. If this is less than `1`, then the terminal will disappear and `terminal.tooBig` will be set to `true`
 
 ## Types
 
