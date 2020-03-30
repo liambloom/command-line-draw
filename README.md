@@ -75,7 +75,7 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`new Margin(out, width, height)`](#new-marginout-width-height)
     - [`margin.lr`](#marginlr)
     - [`margin.tb`](#margintb)
-  - [Types![](../img/ts-def.png)](#types)
+  - [Types ![ts](./img/ts-def-18.png)](#types)
   - [More Info](#more-info)
     - [Borders](#borders)
     - [Colors](#colors)
