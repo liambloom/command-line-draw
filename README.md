@@ -57,8 +57,22 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`terminal.tooBig`](#terminaltoobig)
     - [`terminal.width`](#terminalwidth)
     - [`terminal.write(text, x, y[, color])`](#terminalwritetext-x-y-color)
-    - [`terminal.writeLarge(text, x, y[, color])`](#terminalwriteLargetext-x-y-color)
-  - [Class: `Sprite` ***Documentation missing***](#class-sprite)
+    - [`terminal.writeLarge(text, x, y[, color])`](#terminalwritelargetext-x-y-color)
+  - [Class: `Sprite`](#class-sprite)
+    - [`new Sprite(callback[, config])`](#new-spritecallback-config)
+    - [`sprite.callback`](#spritecallback)
+    - [`sprite.clear()`](#spriteclear)
+    - [`sprite.draw(x, y[, ...args])`](#spritedrawx-y-args)
+    - [`sprite.move(x1, y1, x2, y2[, t])`](#spritemovex1-y1-x2-y2-t)
+    - [`sprite.moveRelative(dx, dy[, t])`](#spritemoverelativedx-dy-t)
+    - [`sprite.moveTo(x, y[, t])`](#spritemovetox-y-t)
+    - [`sprite.showing`](#sprite.showing)
+    - [`sprite.speed`](#spritespeed)
+    - [`sprite.stop()`](#spritestop)
+    - [`sprite.x`](#spritex)
+    - [`sprite.xRounder`](#spritexrounder)
+    - [`sprite.y`](#spritey)
+    - [`sprite.yRounder`](#spriteyrounder)
   - [Class: `Box` ***Documentation missing***](#class-box)
   - [Class: `Menu` ***Documentation missing***](#class-menu)
   - [Class: `Color` ***Not Exported***](#class-color-not-exported)
@@ -478,7 +492,134 @@ terminal.log('Hello World');
 
   - Extends: [`<EventEmitter>`](https://nodejs.org/api/events.html#events_class_eventemitter)
 
-***`Sprite` class has not yet been documented***
+### `new Sprite(callback[, config])`
+
+  - `callback` [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) This callback is called to draw the shape
+
+    - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x coordinate that the `sprite` should be drawn at.
+    - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y coordinate that the `sprite` should be drawn at.
+    - `...args` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) Any other arguments passed into the callback.
+
+  - `config` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+    - `preciseAxis` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) `'x'`, `'y'`, or `'neither'`. The axis to use decimal coordinates on. **Default:** `'neither'`.
+    - `speed` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | [`<undefined>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type) The speed the `sprite` should move if a time is not provided in [`sprite.move()`](#spritemovex1-y1-x2-y2-t).
+
+### `sprite.callback`
+
+  - [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+The callback that was passed into the [constructor](#new-spritecallback-config)
+
+Creates a new `sprite` object.
+
+```js
+const { Terminal, Sprite } = require("command-line-draw");
+
+const terminal = new Terminal();
+const mySprite = new Sprite((x, y) => {
+  terminal.drawBox(x, y, 10, 10);
+});
+
+terminal.addSprite(mySprite);
+sprite.draw(0, 0); // Draws a 10x10 box at (0, 0)
+```
+
+### `sprite.clear()`
+
+Clears the sprite from the terminal.
+
+### `sprite.draw(x, y[, ...args])`
+
+  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
+  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
+  - `...args` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) Other arguments to pass into [`sprite.callback`](#spritecallback).
+
+Calls [`sprite.callback`](#spritecallback) in order to draw the `sprite`.
+
+### `sprite.move(x1, y1, x2, y2[, t])`
+
+  - `x1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position for the box to start at.
+  - `y1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position for the box to start at.
+  - `x2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position for the box to end at.
+  - `y2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position for the box to end at.
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+
+Moves the `sprite` from (x1, y1) to (x2, y2).
+
+```js
+const { Terminal, Sprite } = require("command-line-draw");
+
+const terminal = new Terminal();
+const mySprite = new Sprite((x, y) => {
+  terminal.drawBox(x, y, 10, 10);
+});
+
+terminal.addSprite(mySprite);
+sprite.move(0, 0, 10, 10, 2); // Moves the sprite from (0, 0) to (10, 10) in 2 seconds
+```
+
+### `sprite.moveRelative(dx, dy[, t])`
+
+  - `dx` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The distance to move on the x axis (can be negative).
+  - `dy` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The distance to move on the y axis (can be negative).
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+
+Move the `sprite` to a new position relative to it's current position. Or, in simple english, moves it a certain distance from its current position.
+
+### `sprite.moveTo(x, y[, t])`
+
+  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position to move to.
+  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position to move to.
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+
+Moves the `sprite` from its current position to the new (x, y) position.
+
+### `sprite.preciseAxis`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The precise axis passed into the config in the [constructor](#new-spritecallback-config).
+
+### `sprite.showing`
+
+  - [`<boolean>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+A boolean indicating if the `sprite` is currently viable.
+
+### `sprite.speed`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The current speed of the `sprite`. Is only used by [`sprite.move()`](#spritemovex1-y1-x2-y2-t) if `time` is not provided.
+
+### `sprite.stop()`
+
+Stops the `sprite` if it is moving. No effect if the sprite isn't currently moving.
+
+### `sprite.x`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The current x position of the `sprite`
+
+### `sprite.xRounder`
+
+  - [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+The function that rounds the x position. If `sprite.preciseAxis === 'x'`, this is a function that rounds to the nearest `0.5`, otherwise it is equal to [Math.round()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round)
+
+### `sprite.y`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The current y position of the `sprite`
+
+### `sprite.yRounder`
+
+  - [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+The function that rounds the y position. If `sprite.preciseAxis === 'y'`, this is a function that rounds to the nearest `0.5`, otherwise it is equal to [Math.round()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round)
 
 ## Class: `Box`
 
