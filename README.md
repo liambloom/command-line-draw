@@ -38,6 +38,7 @@ There are 4 classes exported by this module, and this section contains documenta
     - [Event: `'resize'`](#event-resize)
     - [`terminal.addSprite(sprite)`](#terminaladdSpritesprite)
     - [`terminal.bitmap(x, y[, color], ...matrixes)`](#terminalbitmapx-y-color-matrixes)
+    - [`terminal.borderChars`](#terminalborderchars)
     - [`terminal.borderStyle`](#terminalborderstyle)
     - [`terminal.clear()`](#terminalclear)
     - [`terminal.color`](#terminalcolor)
@@ -73,8 +74,18 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`sprite.xRounder`](#spritexrounder)
     - [`sprite.y`](#spritey)
     - [`sprite.yRounder`](#spriteyrounder)
-  - [Class: `Box` ***Documentation missing***](#class-box)
-  - [Class: `Menu` ***Documentation missing***](#class-menu)
+  - [Class: `Box`](#class-box)
+    - [`new Box(width, height, config)`](#new-boxwidth-height-config)
+    - [`box.height`](#boxheight)
+    - [`box.touching(box)`](#boxtouchingbox)
+    - [`box.width`](#boxwidth)
+  - [Class: `Menu` ***Documentation incomplete***](#class-menu)
+    - [`new Menu(callback, options[, style])`](#new-menucallback-options-style)
+    - [`menu.borderChars`](#menuborderchars)
+    - [`menu.height`](#menuheight)
+    - [`menu.options`](#menuoptions)
+    - [`menu.style`](#menustyle)
+    - [`menu.width`](#menuwidth)
   - [Class: `Color` ***Not Exported***](#class-color-not-exported)
     - [`new Color(out)`](#new-colorout)
     - [Static: `Color.getBackgroundColor(color)`](#static-colorgetbackgroundcolorcolor)
@@ -111,7 +122,6 @@ const { Terminal } = require('command-line-draw');
 #### Arguments
 
 - `config` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
   - `in` [`<tty.ReadStream>`](https://nodejs.org/api/tty.html#tty_class_tty_readstream) Where the `Terminal` reads user input from. **Default:** `process.stdin`.
   - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) Where the `Terminal` writes to. **Default:** `process.stdout`.
   - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The width of the `Terminal`. **Default:** `terminal.out.columns - 2`.
@@ -311,7 +321,7 @@ terminal.bitmap(0, 0, [
 
 ### `terminal.borderChars`
 
-  - [`<string[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
 
 The characters the border is made up of. Equal to `Terminal.BORDERS[terminal.borderStyle]`
 
@@ -473,7 +483,7 @@ Writes text to the terminal at a particular position. If the text is too long an
 
   - `text` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The text to be written to the terminal.
   - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x coordinate at which to print the text.
-  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y coordinate at which to print the text.
+  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y coordinate at which to print the text.
   - `color` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The color of the text **Default:** `terminal.color.foreground`.
 
 Prints large text to the terminal at a particular position. Each character is a seven segment display with a 2 character space between characters and 6 character space between words. Allowed characters are letters, numbers, and basic punctuation (`.!?`).
@@ -495,15 +505,12 @@ terminal.log('Hello World');
 ### `new Sprite(callback[, config])`
 
   - `callback` [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) This callback is called to draw the shape
-
-    - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x coordinate that the `sprite` should be drawn at.
-    - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y coordinate that the `sprite` should be drawn at.
+    - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x coordinate that the `sprite` should be drawn at.
+    - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y coordinate that the `sprite` should be drawn at.
     - `...args` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) Any other arguments passed into the callback.
-
   - `config` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
     - `preciseAxis` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) `'x'`, `'y'`, or `'neither'`. The axis to use decimal coordinates on. **Default:** `'neither'`.
-    - `speed` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | [`<undefined>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type) The speed the `sprite` should move if a time is not provided in [`sprite.move()`](#spritemovex1-y1-x2-y2-t).
+    - `speed` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | [`<undefined>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type) The speed the `sprite` should move if a time is not provided in [`sprite.move()`](#spritemovex1-y1-x2-y2-t).
 
 ### `sprite.callback`
 
@@ -531,19 +538,19 @@ Clears the sprite from the terminal.
 
 ### `sprite.draw(x, y[, ...args])`
 
-  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
-  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
+  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
+  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y coordinate to draw the `sprite` at. This is passed into [`sprite.callback`](#spritecallback).
   - `...args` [`<any>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types) Other arguments to pass into [`sprite.callback`](#spritecallback).
 
 Calls [`sprite.callback`](#spritecallback) in order to draw the `sprite`.
 
 ### `sprite.move(x1, y1, x2, y2[, t])`
 
-  - `x1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position for the box to start at.
-  - `y1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position for the box to start at.
-  - `x2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position for the box to end at.
-  - `y2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position for the box to end at.
-  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+  - `x1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x position for the box to start at.
+  - `y1` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y position for the box to start at.
+  - `x2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x position for the box to end at.
+  - `y2` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y position for the box to end at.
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
 
 Moves the `sprite` from (x1, y1) to (x2, y2).
 
@@ -561,17 +568,17 @@ sprite.move(0, 0, 10, 10, 2); // Moves the sprite from (0, 0) to (10, 10) in 2 s
 
 ### `sprite.moveRelative(dx, dy[, t])`
 
-  - `dx` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The distance to move on the x axis (can be negative).
-  - `dy` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The distance to move on the y axis (can be negative).
-  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+  - `dx` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The distance to move on the x axis (can be negative).
+  - `dy` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The distance to move on the y axis (can be negative).
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
 
 Move the `sprite` to a new position relative to it's current position. Or, in simple english, moves it a certain distance from its current position.
 
 ### `sprite.moveTo(x, y[, t])`
 
-  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The x position to move to.
-  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The y position to move to.
-  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
+  - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x position to move to.
+  - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y position to move to.
+  - `t` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The time (in seconds) that the movement should take. **Default:** `distance / terminal.speed * 1000`. *Required if `this.speed === undefined`*.
 
 Moves the `sprite` from its current position to the new (x, y) position.
 
@@ -589,7 +596,7 @@ A boolean indicating if the `sprite` is currently viable.
 
 ### `sprite.speed`
 
-  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
 The current speed of the `sprite`. Is only used by [`sprite.move()`](#spritemovex1-y1-x2-y2-t) if `time` is not provided.
 
@@ -599,7 +606,7 @@ Stops the `sprite` if it is moving. No effect if the sprite isn't currently movi
 
 ### `sprite.x`
 
-  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
 The current x position of the `sprite`
 
@@ -611,7 +618,7 @@ The function that rounds the x position. If `sprite.preciseAxis === 'x'`, this i
 
 ### `sprite.y`
 
-  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
 The current y position of the `sprite`
 
@@ -625,13 +632,130 @@ The function that rounds the y position. If `sprite.preciseAxis === 'y'`, this i
 
   - Extends: [`<Sprite>`](#class-sprite)
 
-***`Box` class has not yet been documented***
+### `new Box(width, height, config)`
+
+  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The width of the box.
+  - `height` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The height of the box.
+  - `config` [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    - `preciseAxis` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) `'x'`, `'y'`, or `'neither'`. The axis to use decimal coordinates on. **Default:** `'y'`.
+    - `speed` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | [`<undefined>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type) The speed the `sprite` should move if a time is not provided in [`sprite.move()`](#spritemovex1-y1-x2-y2-t).
+
+Creates a new `box` object. A `box` is a `sprite` where the callback draws a box of a particular `width` and `height` on the canvas.
+
+```js
+const { Terminal, Box } = require("command-line-draw");
+
+const terminal = new Terminal();
+const myBox = new Box(10, 10);
+
+terminal.addSprite(myBox);
+myBox.draw(0, 0); // Draws a 10x10 box at (0, 0)
+```
+
+### `box.height`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+The height passed into the constructor. It is readonly, meaning it cannot be set.
+
+### `box.touching(box)`
+
+  - `box` [`<Box>`](#class-box) The box to check the position against.
+
+Checks if two boxes are touching.
+
+```js
+const { Terminal, Box } = require("command-line-draw");
+
+const terminal = new Terminal();
+const box1 = new Box(5, 5);
+const box2 = new Box(5, 5);
+
+terminal.addSprite(box1);
+terminal.addSprite(box2);
+
+box1.draw(0, 0);
+box2.draw(5, 0);
+
+box1.touching(box2); // true, the boxes are touching
+```
+
+### `box.width`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+The width passed into the constructor. It is readonly, meaning it cannot be set.
 
 ## Class: `Menu`
 
   - Extends: [`<Sprite>`](#class-sprite)
 
-***`Menu` class has not yet been documented***
+### `new Menu(callback, options[, style])`
+
+  - `callback` [`<Function>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) The function called when a menu option is selected
+    - `i` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The index of the menu option selected
+  - `options` [`<string[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) A list of menu options
+  - `style` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The style of the border. It can be any style on [this list](#borders) except for `'none'` or `'solid'`. **Default:** `terminal.borderStyle`, or `'light'` if that is invalid.
+
+Creates a new `menu` object. A menu can be drawn and allows the user to select an option from your list of `options`. When the user selects an option, the menu is cleared and the callback is run with the argument `i` being the index of the selected option.
+
+```js
+const { Terminal, Menu } = require("command-line-draw");
+
+const terminal = new Terminal();
+const myMenu = new Menu(i => {
+  // Do something here
+}, [
+  "First option",
+  "Option 2",
+  "The 3rd option",
+  "Option D"
+]);
+
+terminal.addSprite(myMenu);
+myMenu.draw(0, 0);
+
+/**
+ * Prints:
+ * ┌────────────────┬────────────┬──────────────────┬────────────┐
+ * │ 1:First option │ 2:Option 2 │ 3:The 3rd option │ 4:Option D │
+ * └────────────────┴────────────┴──────────────────┴────────────┘
+ * 
+ * When an option is selected, this is removed and callback is called.
+ * For example, if the user presses 1, the first option, at index 0, was selected.
+ * This means that callback(0) is called.
+ */ 
+```
+
+### `menu.borderChars`
+
+  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The characters the border is made up of. Equal to `Terminal.BORDERS[menu.style]`. If accessed before this is added to a terminal, it will throw and error if a `style` was not passed into the [constructor](#new-menucallback-options-style).
+
+### `menu.height`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+The height of the menu. Always set to `3`.
+
+### `menu.options`
+
+  - [`<string[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The list of options passed into the [constructor](#new-menucallback-options-style).
+
+### `menu.style`
+
+  - [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+
+The style passed into the [constructor](#new-menucallback-options-style). If no style was passed into the constructor, it will throw an error before it has been added to a terminal. After it has been added, it will default to `terminal.borderStyle`, and, if that is invalid, will default to `'light'`.
+
+### `menu.width`
+
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+The width of the menu.
 
 ## Class: `Color` *Not Exported*
 
@@ -719,8 +843,8 @@ The class `Color` is not exported, however, [`terminal.margin`](#terminalmargin)
 ### `new Margin(out, width, height)`
 
   - `out` [`<tty.WriteStream>`](https://nodejs.org/api/tty.html#tty_class_tty_writestream) The write stream that the `terminal` is on.
-  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The width of the `terminal`.
-  - `height` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The height of the `terminal`.
+  - `width` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The width of the `terminal`.
+  - `height` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The height of the `terminal`.
 
 Creates a new `Margin` object. There is no reason for you to *ever* use this, I just included it for completion
 
@@ -735,19 +859,19 @@ const myMargin = new Margin(process.stdout, terminal.width, terminal.height); //
 
 ### `margin.lr`
 
-  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
 The left-right margin of the `terminal`. If this is less than `terminal.largestBorder`, then the terminal will disappear and `terminal.tooBig` will be set to `true`
 
 ### `margin.tb`
 
-  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+  - [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
 The top-bottom margin of the `terminal`. If this is less than `1`, then the terminal will disappear and `terminal.tooBig` will be set to `true`
 
 ## Types
 
-A type deceleration file has been included at [`./lib/cmdDraw.d.ts`](https://github.com/liambloom/command-line-draw/blob/master/lib/cmdDraw.d.ts). I tried, but I do not know typescript, so it likely has mistakes. If you find them, please report them at the github [issues page](https://github.com/liambloom/command-line-draw/issues).
+A type deceleration file has been included at [`./lib/cmdDraw.d.ts`](https://github.com/liambloom/command-line-draw/blob/master/lib/cmdDraw.d.ts). I tried, but I don&apos;t know typescript, so it likely has mistakes. If you find them, please report them to the github [issues page](https://github.com/liambloom/command-line-draw/issues).
 
 ## More Info
 

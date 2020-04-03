@@ -82,7 +82,7 @@ export class Terminal extends EventEmitter {
   readonly width: number;
   readonly height: number;
   readonly borderStyle: BorderStyle;
-  readonly borderChars: Array<BorderChars | Partial<MenuBorderChars>>;
+  readonly borderChars: BorderChars | Partial<MenuBorderChars>;
   readonly hasBorder: boolean;
   readonly color: Color;
   readonly margin: Margin;
@@ -359,13 +359,13 @@ export class Box extends Sprite {
     preciseAxis: Axis;
     speed: number;
   });
-  touching(box: Box, log?: boolean): boolean;
+  touching(box: Box): boolean;
   readonly width: number;
   readonly height: number;
 }
 
 export class Menu extends Sprite {
-  constructor (callback: (i: number) => void, options: string[], style: Omit<BorderStyle, "round" | "none">);
+  constructor (callback: (i: number) => void, options: string[], style?: Omit<BorderStyle, "round" | "none">);
   height: number;
   readonly options: string[];
   get width(): number;
