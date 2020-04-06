@@ -59,7 +59,7 @@ export class Terminal extends EventEmitter {
   });
   drawLine(x1: number, y1: number, x2: number, y2: number, color?: ColorString, thickness?: number, dashed?: boolean, dashThickness?: number, spaceColor?: ColorString): void;
   drawBox(x: number, y: number, width: number, height: number, color?: ColorString): void;
-  write(text: string, x: number, y: number, color?: ColorString): void;
+  write(text: string, x: number, y: number, color?: ColorString, backgroundColor?: ColorString): void;
   clear(): void;
   addSprite(sprite: Sprite): void;
   sevenSegment(x: number, y: number, a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, color?: ColorString): void;

@@ -470,12 +470,13 @@ Returns `true` when the `terminal`'s width and height exceed the actual size of 
 
 The width of the `terminal`.
 
-### `terminal.write(text, x, y[, color])`
+### `terminal.write(text, x, y[, color][, backgroundColor])`
 
   - `text` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The text to be written to the terminal.
   - `x` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The x coordinate at which to print the text.
   - `y` [`<number>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) The y coordinate at which to print the text.
   - `color` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The color of the text **Default:** `terminal.color.foreground`.
+  - `backgroundColor` [`<string>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The background color of the text **Default:** `terminal.color.background`.
 
 Writes text to the terminal at a particular position. If the text is too long and goes outside the terminal, it will not wrap, it will instead throw an error.
 
