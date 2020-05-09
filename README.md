@@ -79,7 +79,7 @@ There are 4 classes exported by this module, and this section contains documenta
     - [`box.height`](#boxheight)
     - [`box.touching(box)`](#boxtouchingbox)
     - [`box.width`](#boxwidth)
-  - [Class: `Menu` ***Documentation incomplete***](#class-menu)
+  - [Class: `Menu`](#class-menu)
     - [`new Menu(callback, options[, style])`](#new-menucallback-options-style)
     - [`menu.borderChars`](#menuborderchars)
     - [`menu.height`](#menuheight)
