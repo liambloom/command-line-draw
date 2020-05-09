@@ -13,7 +13,7 @@ A library that allows you to draw and animate on the command line. I created it 
 $ npm i command-line-draw
 ```
 
-# Documentation (Incomplete)
+# Documentation
 
 There are 4 classes exported by this module, and this section contains documentation for all 4. 
 
