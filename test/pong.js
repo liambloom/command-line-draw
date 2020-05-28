@@ -1,15 +1,12 @@
-// This version of pong is downloadable from npm as command-line-pong
-
-const flags = require("./flags")();
-const { Terminal, Box, Menu } = require("../lib/cmdDraw");
-console = require("./colorConsole");
-
-function pong() {
+function pong () {
   "use strict";
+  const flags = require("./flags")();
+  const { Terminal, Box, Menu } = require("../lib/cmdDraw");
+  console = require("./colorConsole");
 
   const random = (min, max) => Math.random() * (max - min) + min;
   const randomSlope = (min, max) => Math.tan(random(Math.atan(min), Math.atan(max)));
-  function directionFunc(n, direction) {
+  function directionFunc (n, direction) {
     const min = 0;
     const max = terminal.width - ball.width;
     if (Math.abs(n) === Infinity) {
@@ -18,7 +15,7 @@ function pong() {
     }
     else return Math.min(Math.max(n, min), max);
   }
-  function nextPoint(slope, direction) {
+  function nextPoint (slope, direction) {
     const directionMod = direction === "right" ? 1 : -1;
     const ballYInt = -slope * ball.x + ball.y;
     const x = directionFunc(directionMod * slope < 0 ? -ballYInt / slope : (terminal.height - ball.height - ballYInt) / slope, direction);
@@ -64,7 +61,7 @@ function pong() {
   terminal.addSprite(rightPaddle);
   terminal.addSprite(ball);
 
-  function reset() {
+  function reset () {
     // paddles
     leftPaddle.stop();
     rightPaddle.stop();
@@ -90,7 +87,7 @@ function pong() {
     writeScore(playerScore, "right");
   }
 
-  function init() {
+  function init () {
     cpuScore = 0;
     playerScore = 0;
     ballDirection = Math.round(Math.random()) ? "left" : "right";
@@ -177,7 +174,7 @@ function pong() {
     onresize();
   }
 
-  function drawTitleScreen() {
+  function drawTitleScreen () {
     terminal.writeLarge("PONG", terminal.width / 2 - 15, terminal.height / 3 - 2.5);
     terminal.write("\x1b[4mBy Liam Bloom\x1b[0m", terminal.width / 2 - 6.5, terminal.height / 3 + 3.5);
     terminal.color.refresh();
