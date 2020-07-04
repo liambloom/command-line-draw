@@ -4,7 +4,15 @@ import { EventEmitter } from "events";
 type ColorString = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white";
 type BorderStyle = "light" | "heavy" | "double" | "round" | "solid" | "none";
 type Axis = "x" | "y" | "neither";
-//type Boolean7 = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+type bm3by5 = [
+    [boolean, boolean, boolean],
+    [boolean, boolean, boolean],
+    [boolean, boolean, boolean],
+    [boolean, boolean, boolean],
+    [boolean, boolean, boolean]
+];
+type sevenSegment = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+
 interface BorderChars {
   vertical: string,
   horizontal: string,
@@ -63,7 +71,7 @@ export class Terminal extends EventEmitter {
   clear(): void;
   addSprite(sprite: Sprite): void;
   sevenSegment(x: number, y: number, a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, color?: ColorString): void;
-  sevenSegmentToBitmap(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean): boolean[][];
+  sevenSegmentToBitmap(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean): bm3by5;
   writeLarge(text: string, x: number, y: number, color?: ColorString): void;
   bitmap(x: number, y: number, ...matrixes: boolean[][][]): void;
   bitmap(x: number, y: number, color?: ColorString, ...matrixes: boolean[][][]): void;
@@ -105,104 +113,32 @@ export class Terminal extends EventEmitter {
   }
   static sevenSegmentPresets: {
     numbers: {
-      "0": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "1": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "2": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "3": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "4": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "5": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "6": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "7": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "8": [boolean, boolean, boolean, boolean, boolean, boolean, boolean],
-      "9": [boolean, boolean, boolean, boolean, boolean, boolean, boolean]
+      "0": sevenSegment,
+      "1": sevenSegment,
+      "2": sevenSegment,
+      "3": sevenSegment,
+      "4": sevenSegment,
+      "5": sevenSegment,
+      "6": sevenSegment,
+      "7": sevenSegment,
+      "8": sevenSegment,
+      "9": sevenSegment
     }
   }
   static bitmapPresets: {
     letters: {
-      A: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      B: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      C: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      D: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      E: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      F: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-      ],
-      G: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      H: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      I: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-      ],
-      J: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      K: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      L: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
+      A: bm3by5,
+      B: bm3by5,
+      C: bm3by5,
+      D: bm3by5,
+      E: bm3by5,
+      F: bm3by5,
+      G: bm3by5,
+      H: bm3by5,
+      I: bm3by5,
+      J: bm3by5,
+      K: bm3by5,
+      L: bm3by5,
       M: [
         [boolean, boolean, boolean, boolean, boolean],
         [boolean, boolean, boolean, boolean, boolean],
@@ -210,69 +146,15 @@ export class Terminal extends EventEmitter {
         [boolean, boolean, boolean, boolean, boolean],
         [boolean, boolean, boolean, boolean, boolean]
       ],
-      N: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      O: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      P: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      Q: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      R: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      S: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      T: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      U: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-      ],
-      V: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-      ],
+      N: bm3by5,
+      O: bm3by5,
+      P: bm3by5,
+      Q: bm3by5,
+      R: bm3by5,
+      S: bm3by5,
+      T: bm3by5,
+      U: bm3by5,
+      V: bm3by5,
       W: [
         [boolean, boolean, boolean, boolean, boolean],
         [boolean, boolean, boolean, boolean, boolean],
@@ -280,27 +162,9 @@ export class Terminal extends EventEmitter {
         [boolean, boolean, boolean, boolean, boolean],
         [boolean, boolean, boolean, boolean, boolean],
       ],
-      X: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ],
-      Y: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-      ],
-      Z: [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ]
+      X: bm3by5,
+      Y: bm3by5,
+      Z: bm3by5
     },
     punctuation: {
       ".": [
@@ -317,13 +181,7 @@ export class Terminal extends EventEmitter {
         [boolean],
         [boolean]
       ],
-      "?": [
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean],
-        [boolean, boolean, boolean]
-      ]
+      "?": bm3by5
     }
   }
 }
