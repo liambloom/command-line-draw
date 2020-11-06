@@ -186,7 +186,7 @@ An object containing [`boolean[][]`](https://developer.mozilla.org/en-US/docs/We
 const { Terminal } = require("command-line-draw");
 
 const terminal = new Terminal();
-terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A);
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letters.A);
 ```
 
 ### Static: `Terminal.bitmapPresets.letters`
@@ -199,7 +199,7 @@ An object containing letters that can be passed into [`terminal.bitmap()`](#term
 const { Terminal } = require("command-line-draw");
 
 const terminal = new Terminal();
-terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A); // Prints a large letter "A" to the terminal
+terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letters.A); // Prints a large letter "A" to the terminal
 ```
 
 ### Static: `Terminal.bitmapPresets.punctuation`
@@ -215,19 +215,6 @@ const terminal = new Terminal();
 terminal.bitmap(0, 0, ...Terminal.bitmapPresets.punctuation["!"]); // Prints a large exclamation point to the terminal
 ```
 
-### Static: `Terminal.bitmapPresets.letters`
-
-  - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-An object containing letters that can be passed into [`terminal.bitmap()`](#terminalbitmapx-y-color-matrixes). They are indexed `"A"`-`"Z"`.
-
-```js
-const { Terminal } = require("command-line-draw");
-
-const terminal = new Terminal();
-terminal.bitmap(0, 0, ...Terminal.bitmapPresets.letter.A);
-```
-
 ### Static: `Terminal.sevenSegmentPresets`
 
   - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -238,10 +225,10 @@ An object containing [`boolean[]`](https://developer.mozilla.org/en-US/docs/Web/
 const { Terminal } = require("command-line-draw");
 
 const terminal = new Terminal();
-terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.number[0]); // Prints a large number 0 to the terminal
+terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.numbers[0]); // Prints a large number 0 to the terminal
 ```
 
-### Static: `Terminal.sevenSegmentPresets.number`
+### Static: `Terminal.sevenSegmentPresets.numbers`
 
   - [`<Object>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -251,7 +238,7 @@ An object containing [`boolean[]`](https://developer.mozilla.org/en-US/docs/Web/
 const { Terminal } = require("command-line-draw");
 
 const terminal = new Terminal();
-terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.number[0]);
+terminal.sevenSegment(0, 0, ...Terminal.sevenSegmentPresets.numbers[0]);
 ```
 
 ### Event: `'<keyName>'`
